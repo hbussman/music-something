@@ -25,8 +25,6 @@ class Webserver{
 		 * @param {*} cbF - callback if not logged in. If not defined a 401 error is send back
 		 */
 		let checkLogin = function (req, res, cbS, cbF) {
-			cbS();
-			return;
 			var token = req.query.accessToken || req.get("x-access-token");
 			if (token) {
 				jwt.verify(token, config.jwtSecret, function (err, result) {
