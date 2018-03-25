@@ -1,0 +1,14 @@
+{
+    "database":{
+        "url": "mongodb://localhost:27017/music"
+    },
+    "dataPath": "/absoulte/path/to/you/data/folder/data",
+    "webserver": {
+        "port": 80,
+        "sessionSecret": "changeMeToSomethingElse",
+        "jwtSecret": "MeToo"
+    },
+    "youtube": {
+        "ffmpegPath": "/absoulte/path/to/ffmpeg/binary.exe"
+    }
+}

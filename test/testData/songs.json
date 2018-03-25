@@ -1,0 +1,29 @@
+[
+	{
+		"file":"ArtistName1/AlbumName1/song1.mp3",
+		"duration": 120,
+		"metadata":{
+			"title":"song1",
+			"artist":"ArtistName1",
+			"album":"AlbumName1",
+			"year":1999,
+			"genre":4
+		}
+	},
+	{
+		"file":"ArtistName2/AlbumName2/song2.mp3",
+		"duration": 100,
+		"metadata":{
+			"title":"song2",
+			"artist":"ArtistName2",
+			"album":"AlbumName2"
+		}
+	},
+	{
+		"file":"Unknown artist/Unknown album/song3.mp3",
+		"duration": 100,
+		"metadata":{
+			"title":"song3"
+		}
+	}
+]

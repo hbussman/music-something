@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Music</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
+
+    <script src="/js/jquery.js"> </script>
+    <script src="/js/bootstrap.min.js"> </script>
+    <script src="/js/MusicSomethingPlayer.js"> </script>
+    <script src="/js/vue.min.js"> </script>
+
+</head>
+
+<body>
+
+    <div id="sidebar" class="noselect">
+        <ul>
+            <li>
+                Music
+                <ul>
+                    <li href="#addModal" data-toggle="modal" data-target="#addModal">Add new Song</li>
+                </ul>
+            </li>
+            <li>
+                Playlist
+                <ul>
+                    <li>Create new playlist</li>
+                </ul>
+            </li>
+            <li class="pointer">
+                Settings
+            </li>
+            <li class="pointer">
+                Admin Stuff
+            </li>
+            <a href="backend/logout">
+                <li class="pointer">
+                    Logout
+                </li>
+            </a>
+        </ul>
+    </div>
+
+    <div id="mainPage">
+    </div>
+
+    <div id="playerControls" class="noselect">
+
+        <span class="glyphicon glyphicon-backward pointer" id="backBtn"></span>
+        <span class="glyphicon glyphicon-play pointer" id="start-stop"></span>
+        <span class="glyphicon glyphicon-forward pointer" id="nextBtn" ></span>
+
+        <div class="progress" id="progressSong" >
+            <div class="progress-bar progress-bar-success" role="progressbar" id="progressSongBar" style="width:0%">
+            </div>
+        </div>
+
+        <div id="volumeSliderContainer">
+            <input type="range" min="0" max="100" step="1" id="volumeSlider"></input>
+        </div>
+
+        <div id="volume">
+            <span class="glyphicon glyphicon-volume-up pointer" id="volumeSpan"></span>
+        </div>
+
+    </div>
+
+    <!-- Modals -->
+
+    <!-- Context menue -->
+    <div id="contextmenu" class="noselect">
+        <ul>
+            <li id="contextmenuPlay" >Play</li>
+            <li id="contextmenuEdit" >Edit</li>
+            <li id="contextmenuPlaylist" >Add to playlist</li>
+            <li id="contextmenuDelete" >Delete</li>
+            <li id="contextmenuDownload" >Download</li>
+        </ul>
+    </div>
+
+    <!-- Delete modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Really delete this song ?</h4>
+                </div>
+                <div class="modal-body">
+                    Delete
+                    <b id="deleteModalSongname"></b> ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="deleteModalBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- edit modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="editModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Edit song</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="editModalTitle">Title</label>
+                            <input type="text" id="editModalTitle" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editModalArtist">Artist</label>
+                            <input type="text" id="editModalArtist" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editModalAlbum">Album</label>
+                            <input type="text" id="editModalAlbum" class="form-control">
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="editModalBtn" >Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add modal -->
+    <div class="modal fade" tabindex="-1" role="dialog" id="addModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Add a new Song</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a data-toggle="tab" href="#home">Upload</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#menu1">YouTube</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="home" class="tab-pane fade in active">
+                            <form id="uploadModalForm">
+                                <div class="form-group">
+                                    <label for="uploadModalFile">File</label>
+                                    <input type="file" id="uploadModalFile" class="form-control" name="file" accept=".mp3">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="uploadModalTitle">Title</label>
+                                    <input type="text" id="uploadModalTitle" class="form-control" name="title">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="uploadModalArtist">Artist</label>
+                                    <input type="text" id="uploadModalArtist" class="form-control" name="artist">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="uploadModalAlbum">Album</label>
+                                    <input type="text" id="uploadModalAlbum" class="form-control" name="album">
+                                </div>
+
+                                <div class="progress">
+                                    <div class="progress-bar" id="uploadModalProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                    </div>
+                                </div>
+                            </form>
+                            <button type="button" class="btn btn-success" id="addModalUploadBtn" >Upload</button>
+
+                        </div>
+                        <div id="menu1" class="tab-pane fade">
+                            <div class="form-group">
+                                <label for="ytdlURL">Youtube URL</label>
+                                <input type="text" id="ytdlURL" class="form-control">
+                            </div>
+                            <button type="button" class="btn btn-success" id="addModalYTdlBtn" >Download</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/main.js"> </script>
+</body>
+
+</html>

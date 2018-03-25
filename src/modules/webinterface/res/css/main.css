@@ -1,0 +1,172 @@
+/*Colors*/
+:root{
+    --main-color: #1a1a1a;
+    --active-color : #4d4d4d;
+    --context-active : #ddd;
+    --context-color : #f2f2f2;
+    --link-color : #fff;
+
+}
+/*General stuff*/
+*{
+    border-radius: 0 !important
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.progress-bar{
+  transition: 5ms;
+}
+
+.noselect {
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+  cursor: default;
+}
+
+
+#mainPage{
+  margin-left: 160px;
+  margin-bottom: 40px;
+}
+
+/*Login*/
+#loginContainer{
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width:400px;
+  height:200px;
+  margin-left: -200px; /*half width*/
+  margin-top: -100px; /*half height*/    
+}
+
+/*Music*/
+#playerControls{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 40px;
+    width: 92%;
+    background-color: var(--main-color);
+    color: white;
+    font-size: 190%;
+    padding-top: 4px;
+    left: 154px;
+}
+
+#volume{
+    position: fixed;
+    right: 13px;
+    bottom: 0px;
+}
+
+#trackList{
+  margin-top: 10px;  
+}
+
+#volumeSliderContainer{
+  position: fixed;
+  right: -40px;
+  bottom: 93px;
+  background: var(--main-color);
+  transform: rotate(-90deg);
+  padding: 5px;
+  visibility: hidden;
+}
+
+/*Sidebar*/
+#sidebar{
+  height: 100%;
+  width: 154px;
+  background: var(--main-color);
+  position: fixed;
+  left: 0;
+  top: 0px;
+}
+
+
+
+#sidebar ul{
+  list-style-type: none;
+  margin-left: -15px;
+
+}
+
+#sidebar ul li{
+  margin-left: -25px;
+  padding-left: 5px;
+  color: var(--link-color);
+  background-color: var(--active-color);
+  line-height: 200%;
+
+  border-bottom: 1px solid #fff;
+}
+
+#sidebar ul li ul li{
+  margin-left: -15px;
+  border-top: 1px solid #fff;
+  border-bottom: none;
+  cursor: pointer;
+}
+
+/*Alert stuff*/
+
+
+/*progressSong*/
+
+#progressSong{
+  position: fixed;
+  bottom: 10px;
+  right: 66px;
+  margin-bottom: auto;
+  left: 275px;
+  
+}
+
+/*Context menu*/
+
+#contextmenu{
+  position: absolute;
+  z-index: 1;
+  width: 200px;
+  height: 150px;
+  background: var(--context-color);
+  box-shadow: 4px 6px 5px 0px rgba(0,0,0,0.5);
+  visibility: hidden;
+  top: 0px;
+  left: 0px;
+  
+}
+
+#contextmenu ul {
+  list-style-type: none;
+  margin-top: 5px;
+}
+
+#contextmenu ul li{
+  margin-left: -40px;
+  padding-left: 5px;
+  line-height: 200%;
+  cursor: pointer;
+}
+
+#contextmenu ul li:hover{
+  background: var(--context-active);
+}
+
+/*Vue*/
+[v-cloak] {
+  display: none;
+}
+
+#trackList{
+    margin-bottom: 40px;
+}
