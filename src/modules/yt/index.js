@@ -19,8 +19,8 @@ class YTDownload{
 			"progressTimeout": 2000
 		});
 
-		this._yd.on("error", function (error, data) {
-			logger.error("YTDownload: " + data.videoId + " failed: " + error);
+		this._yd.on("error", function (error) {
+			logger.error("YTDownload: " + error);
 		});
 	
 		this._yd.on("progress", function (progress) {
