@@ -57,7 +57,38 @@ class webinterface{
 		});
 
 		/*
-		 *	For loggin in via the webinterface 
+		 *	For creating a new account via the webinterface
+		 *	Method: POST
+		 *	Path: /backend/register
+		 */
+		router.post("/backend/register", function (req, res) {
+			req.app.locals.checkLogin(req, res, function () {
+				res.redirect("/");
+			}, function () {
+				this._music.addUser(req.body.username, req.body.password, function (err) {
+					if (err) {
+						//TODO log err / notify user properly
+                        res.status(500).send(err.message)
+					} else {
+						// log the user in right away
+                        this._music.loginCheck(req.body.username, req.body.password, function (err, result, user) {
+                            if (err) {
+                                //TODO log err
+                                throw err;
+                            } else if (result) {
+                                req.session.user = user;
+                                res.redirect("/");
+                            } else {
+                                res.redirect("/login");
+                            }
+                        });
+					}
+				}.bind(this));
+			}.bind(this));
+		}.bind(this));
+
+		/*
+		 *	For logging in via the webinterface
     	 *  Method: POST
     	 *  Path: /backend/login 
     	 */
