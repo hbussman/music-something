@@ -11,9 +11,6 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.png">
 
-    </script>
-    </script>
-
 </head>
 
 <body>
@@ -31,7 +28,8 @@
                         <input name="password" id="password" type="password" class="form-control" required>
                     </div>
 
-                    <button class="btn btn-default">Login</button>
+                    <button class="btn btn-primary" onclick="this.form.action=this.value;" type="submit" value="/backend/login">Login</button>
+                    <button class="btn btn-default" onclick="this.form.action=this.value;" type="submit" value="/backend/register">Register</button>
 
                 </form>
 

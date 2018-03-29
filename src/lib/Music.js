@@ -415,7 +415,7 @@ class Music{
 						//TODO: log eroor
 						callback(err);
 					} else {
-						this._db.addUser(username, hash, function (err) {
+                        this._db.addUser(username, hash, function (err) {
 							if (err) {
 								//TODO: log error
 								callback(err);
@@ -424,14 +424,14 @@ class Music{
 							}
 						});
 					}
-				});
+				}.bind(this));
 			}
-		});
+		}.bind(this));
 	}
 
 	/**
-     * Get all Users from the system 
-     * @param {*} cb - Callback 
+     * Get all Users from the system
+     * @param {*} cb - Callback
      */
 	getAllUsers (cb) {
 		this._db.getAllUsers(cb);
@@ -439,9 +439,9 @@ class Music{
 
 	/**
      * Changes the password of a user
-     * @param {string} username 
-     * @param {string} newPassword 
-     * @param {errCallback} callback 
+     * @param {string} username
+     * @param {string} newPassword
+     * @param {errCallback} callback
      */
 	updatePassword (username, newPassword, callback) {
 		this._db.updatePassword(username,newPassword,function(err){
@@ -454,8 +454,8 @@ class Music{
 
 	/**
      * Removes a user from the system
-     * @param {string} username 
-     * @param {errCallback} cb 
+     * @param {string} username
+     * @param {errCallback} cb
      */
 	deleteUser(username, callback) {
 		this._db.removeUser(username,function(err){
