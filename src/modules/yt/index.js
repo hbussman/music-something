@@ -4,7 +4,22 @@ const path = require("path");
 const router = express.Router();
 
 class YTDownload{
-	constructor(music, logger, config){
+
+    static getConfigTemplate() {
+        return {
+            section: 'youtube',
+            description: "Configure the Youtube-Downloader plugin",
+            elements: [
+                {
+                    option: 'ffmpegPath',
+                    description: "The path to your ffmpeg executable (the default assumes it's in the PATH)",
+                    standard: "ffmpeg"
+                }
+            ]
+        }
+    }
+
+    constructor(music, logger, config){
 		this._music = music;
 		this._logger = logger;
 		this._config = config;

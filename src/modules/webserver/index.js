@@ -7,6 +7,29 @@ const fileupload = require("express-fileupload");
 const jwt = require("jsonwebtoken");
 
 class Webserver{
+
+	static getConfigTemplate() {
+        return {
+            section: 'webserver',
+            description: "Options related to the internal webserver",
+            elements: [
+                {
+                    option: 'port',
+                    description: "Port to listen on",
+                    standard: "80"
+                },
+                {
+                    option: 'sessionSecret',
+                    description: "Session secret, keep it secret!"
+                },
+                {
+                    option: 'jwtSecret',
+                    description: "No idea what this is, might even be unused." // TODO no gud
+                },
+            ]
+        }
+    }
+
 	constructor(music, logger, config){
 		this._logger = logger;
 		this._music = music;
