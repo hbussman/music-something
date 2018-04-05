@@ -2,9 +2,10 @@
 const Music = require("./Music");
 
 class MusicSomething{
-	constructor(config,dbmodule,modules,logger){
+	constructor(config,storage,dbmodule,modules,logger){
 		this._db = new dbmodule(config);
 		this._config = config;
+		this._storage = storage;
 
 		this._modules = [];
 		if(modules){

@@ -8,17 +8,18 @@ const Metadata = require("./Metadata");
 const Song = require("./Song");
 
 
-class Music{
+class Music {
 	/**
 	 * Constructor
 	 * @param {DbBase} dbDriver - Database driver
 	 * @param {*} config 
 	 * @param {*} logger 
 	 */
-	constructor(dbDriver,config,logger){
+	constructor(dbDriver,config,logger,storage){
 		this._db = dbDriver;
 		this._config = config;
 		this._logger = logger;
+		this._storage = storage;
 	}
 
 	/**
@@ -71,7 +72,7 @@ class Music{
 	}
 
 	_getAbsoluteFilePath(relativePath){
-		return path.join(this._config.dataPath,relativePath);
+		return path.join(this._storage.storageDirs.DATA, relativePath);
 	}
 
 	/**
