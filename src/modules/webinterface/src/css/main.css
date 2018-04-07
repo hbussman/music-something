@@ -137,7 +137,7 @@
   position: absolute;
   z-index: 1;
   width: 200px;
-  height: 150px;
+  height: 100px;
   background: var(--context-color);
   box-shadow: 4px 6px 5px 0px rgba(0,0,0,0.5);
   visibility: hidden;

@@ -13,8 +13,17 @@
 
     <script src="/js/jquery.js"> </script>
     <script src="/js/bootstrap.min.js"> </script>
-    <script src="/js/MusicSomethingPlayer.js"> </script>
     <script src="/js/vue.min.js"> </script>
+
+    <script src="/js/bundle.js"></script>
+
+<!--
+    <script src="/js/EventEmitter.js"></script>
+    <script src="/js/MusicSomething.js"> </script>
+    <script src="/js/MusicSomethingPlayer.js"> </script>
+    <script src="/js/Player.js"> </script>
+    <script src="/js/mein.js"> </script>
+-->
 
 </head>
 
@@ -49,15 +58,50 @@
     </div>
 
     <div id="mainPage">
+        <table id="songTable" class="table table-hover noselect">
+            <thead>
+                <tr>
+                    <th v-on:click="changeSortKey(0)" class="pointer">
+                        Title
+                    </th>
+                    <th v-on:click="changeSortKey(1)" class="pointer">
+                        Artist
+                    </th>
+                    <th v-on:click="changeSortKey(2)" class="pointer">
+                        Album
+                    </th>
+                    <th v-on:click="changeSortKey(3)" class="pointer">
+                        Durration
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(song,index) in filteredSongs" v-on:dblclick="doubleClick(index)" v-on:contextmenu="oncontextmenu(index,$event)"
+                    v-cloak>
+                    <td>
+                        {{song.metadata.title}}
+                    </td>
+                    <td>
+                        {{song.metadata.artist}}
+                    </td>
+                    <td>
+                        {{song.metadata.album}}
+                    </td>
+                    <td>
+                        {{song.durationMinutes}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div id="playerControls" class="noselect">
 
         <span class="glyphicon glyphicon-backward pointer" id="backBtn"></span>
         <span class="glyphicon glyphicon-play pointer" id="start-stop"></span>
-        <span class="glyphicon glyphicon-forward pointer" id="nextBtn" ></span>
+        <span class="glyphicon glyphicon-forward pointer" id="nextBtn"></span>
 
-        <div class="progress" id="progressSong" >
+        <div class="progress" id="progressSong">
             <div class="progress-bar progress-bar-success" role="progressbar" id="progressSongBar" style="width:0%">
             </div>
         </div>
@@ -77,11 +121,11 @@
     <!-- Context menue -->
     <div id="contextmenu" class="noselect">
         <ul>
-            <li id="contextmenuPlay" >Play</li>
-            <li id="contextmenuEdit" >Edit</li>
-            <li id="contextmenuPlaylist" >Add to playlist</li>
-            <li id="contextmenuDelete" >Delete</li>
-            <li id="contextmenuDownload" >Download</li>
+            <li id="contextmenuPlay">Play</li>
+            <li id="contextmenuEdit">Edit</li>
+            <li id="contextmenuPlaylist">Add to playlist</li>
+            <li id="contextmenuDelete">Delete</li>
+            <li id="contextmenuDownload">Download</li>
         </ul>
     </div>
 
@@ -139,7 +183,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" id="editModalBtn" >Save</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="editModalBtn">Save</button>
                 </div>
             </div>
         </div>
@@ -193,7 +237,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <button type="button" class="btn btn-success" id="addModalUploadBtn" >Upload</button>
+                            <button type="button" class="btn btn-success" id="addModalUploadBtn">Upload</button>
 
                         </div>
                         <div id="menu1" class="tab-pane fade">
@@ -201,7 +245,7 @@
                                 <label for="ytdlURL">Youtube URL</label>
                                 <input type="text" id="ytdlURL" class="form-control">
                             </div>
-                            <button type="button" class="btn btn-success" id="addModalYTdlBtn" >Download</button>
+                            <button type="button" class="btn btn-success" id="addModalYTdlBtn">Download</button>
                         </div>
 
                     </div>
@@ -210,7 +254,7 @@
         </div>
     </div>
 
-    <script src="/js/main.js"> </script>
+
 </body>
 
 </html>

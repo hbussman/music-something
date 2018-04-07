@@ -1,5 +1,5 @@
 
-function MusicSomethingPlayer() {
+function MusicSomethingPlayery() {
 	//Private
 	var audio;
 	var tableVue;
@@ -338,6 +338,7 @@ function MusicSomethingPlayer() {
 		methods: {
 
 			changeSortKey: function (key) {
+				debugger;
 				this.sortKey = key;
 				this.sortAsc = !this.sortAsc;
 			},
@@ -374,6 +375,7 @@ function MusicSomethingPlayer() {
 		computed: {
 			filteredSongs: function () {
 				return this.songList.sort(function (a, b) {
+					
 					if (a[this.sortKey] < b[this.sortKey]) return (this.sortAsc) ? -1 : 1;
 					if (a[this.sortKey] > b[this.sortKey]) return (this.sortAsc) ? 1 : -1;
 					if (a[this.sortKey] == null) return (this.sortAsc) ? 1 : -1;

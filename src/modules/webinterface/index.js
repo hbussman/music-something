@@ -18,7 +18,7 @@ class webinterface{
 
 	get router(){
 
-		router.use(express.static(path.join(__dirname,"res")));
+		router.use(express.static(path.join(__dirname,"dist","public")));
 
 		//Jquery
 		router.use("/js", express.static(path.join(require.resolve("jquery"),"..")));
@@ -38,7 +38,7 @@ class webinterface{
 			req.app.locals.checkLogin(req, res, function () {
 				res.redirect("/");
 			}, function () {
-				res.sendFile(path.join(__dirname, "login.html"));
+				res.sendFile(path.join(__dirname,"dist","private", "login.html"));
 			});
 		});
 
@@ -49,7 +49,7 @@ class webinterface{
     	 */
 		router.get("/", function (req, res) {
 			req.app.locals.checkLogin(req, res, function () {
-				res.sendFile(path.join(__dirname, "index.html"));
+				res.sendFile(path.join(__dirname,"dist","private", "index.html"));
 			}, function () {
 				res.redirect("/login");
 			});
@@ -68,20 +68,20 @@ class webinterface{
 				this._music.addUser(req.body.username, req.body.password, function (err) {
 					if (err) {
 						//TODO log err / notify user properly
-                        res.status(500).send(err.message)
+						res.status(500).send(err.message);
 					} else {
 						// log the user in right away
-                        this._music.loginCheck(req.body.username, req.body.password, function (err, result, user) {
-                            if (err) {
-                                //TODO log err
-                                throw err;
-                            } else if (result) {
-                                req.session.user = user;
-                                res.redirect("/");
-                            } else {
-                                res.redirect("/login");
-                            }
-                        });
+						this._music.loginCheck(req.body.username, req.body.password, function (err, result, user) {
+							if (err) {
+								//TODO log err
+								throw err;
+							} else if (result) {
+								req.session.user = user;
+								res.redirect("/");
+							} else {
+								res.redirect("/login");
+							}
+						});
 					}
 				}.bind(this));
 			}.bind(this));
