@@ -17,44 +17,44 @@ const confMan = new ConfigLoader(path.join(__dirname, "..", "config", "config.js
 
 // load the config and start
 confMan.loadOrCreate(function (config, err) {
-    if(err) {
-        throw err;
-    }
+	if (err) {
+		throw err;
+	}
 
-    const storage = new StorageManager(config);
-    storage.init();
+	const storage = new StorageManager(config);
+	storage.init();
 
 	//create logger
-    const myFormat = winston.format.printf(info => {
-        return `[${info.level}] ${info.timestamp} : ${info.message}`;
-    });
+	const myFormat = winston.format.printf(info => {
+		return `[${info.level}] ${info.timestamp} : ${info.message}`;
+	});
 
-    const logger = winston.createLogger({
-        format: winston.format.combine(
-            winston.format.timestamp(),
-            myFormat
-        ),
-        transports: [
-            new winston.transports.File({filename: path.join(storage.storageDirs.LOGS, "combined.log"), json: false}),
-            new winston.transports.File({
-                filename: path.join(storage.storageDirs.LOGS, "error.log"),
-                level: "error",
-                json: false
-            })
-        ]
-    });
+	const logger = winston.createLogger({
+		format: winston.format.combine(
+			winston.format.timestamp(),
+			myFormat
+		),
+		transports: [
+			new winston.transports.File({filename: path.join(storage.storageDirs.LOGS, "combined.log"), json: false}),
+			new winston.transports.File({
+				filename: path.join(storage.storageDirs.LOGS, "error.log"),
+				level: "error",
+				json: false
+			})
+		]
+	});
 
-    if (process.env.NODE_ENV == "development") {
-        logger.add(new winston.transports.Console());
-    }
+	if (process.env.NODE_ENV == "development") {
+		logger.add(new winston.transports.Console());
+	}
 
-    //Create and start the app
+	//Create and start the app
 
-    let app = new MusicSomething(config, storage, dbModule, [
-        webserver,
-        webinterface,
-        yt
-    ], logger);
+	let app = new MusicSomething(config, storage, dbModule, [
+		webserver,
+		webinterface,
+		yt
+	], logger);
 
-    app.start();
+	app.start();
 });

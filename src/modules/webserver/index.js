@@ -6,35 +6,13 @@ const session = require("express-session");
 const fileupload = require("express-fileupload");
 const jwt = require("jsonwebtoken");
 
-class Webserver{
+class Webserver {
 
-	static getConfigTemplate() {
-        return {
-            section: 'webserver',
-            description: "Options related to the internal webserver",
-            elements: [
-                {
-                    option: 'port',
-                    description: "Port to listen on",
-                    standard: "80"
-                },
-                {
-                    option: 'sessionSecret',
-                    description: "Session secret, keep it secret!"
-                },
-                {
-                    option: 'jwtSecret',
-                    description: "No idea what this is, might even be unused." // TODO no gud
-                },
-            ]
-        }
-    }
-
-	constructor(music, logger, config){
+	constructor(music, logger, config) {
 		this._logger = logger;
 		this._music = music;
 		this._config = config;
-		
+
 		let log = function (req, res, next) {
 			logger.verbose(req.ip + " " + req.method + " " + req.originalUrl);
 			next();
@@ -42,8 +20,8 @@ class Webserver{
 
 		/**
 		 * Check if login is valid. If no sends 401, if yes calls callback
-		 * @param {*} req 
-		 * @param {*} res 
+		 * @param {*} req
+		 * @param {*} res
 		 * @param {*} cbS - callback if is logged in
 		 * @param {*} cbF - callback if not logged in. If not defined a 401 error is send back
 		 */
@@ -52,7 +30,7 @@ class Webserver{
 			if (token) {
 				jwt.verify(token, config.jwtSecret, function (err, result) {
 					if (err) {
-					//err
+						//err
 						res.status(500).send();
 					} else if (result) {
 						req.user = result.username;
@@ -94,18 +72,40 @@ class Webserver{
 
 	}
 
-	init(allMoules,callback){
+	static getConfigTemplate() {
+		return {
+			section: "webserver",
+			description: "Options related to the internal webserver",
+			elements: [
+				{
+					option: "port",
+					description: "Port to listen on",
+					standard: "80"
+				},
+				{
+					option: "sessionSecret",
+					description: "Session secret, keep it secret!"
+				},
+				{
+					option: "jwtSecret",
+					description: "No idea what this is, might even be unused." // TODO no gud
+				},
+			]
+		};
+	}
+
+	init(allMoules, callback) {
 		/**
-     	 * Handles 404 error
-     	 */
+		 * Handles 404 error
+		 */
 		var four0four = function (req, res) {
 			res.status(404);
 			res.send("404");
 		};
 
 		/**
-     	 * Handles general errors
-     	 */
+		 * Handles general errors
+		 */
 		var errorHandle = function (err, req, res) {
 
 			this._logger.error("Webserver error: " + err);

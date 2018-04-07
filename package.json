@@ -36,6 +36,5 @@
     "mocha": "^5.0.4",
     "webpack": "^4.5.0",
     "webpack-stream": "^4.0.3"
-
   }
 }

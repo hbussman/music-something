@@ -11,18 +11,18 @@ class DbMongo extends DbBase {
 	}
 
 	static getConfigTemplate() {
-        return {
-            section: 'database_mongo',
-            description: "Configure the databasing system",
-            elements: [
-                {
-                    option: 'url',
-                    description: "Give the full URL to your MongoDB server (should start with 'mongodb://')",
-                    standard: "mongodb://localhost:27017/music"
-                }
-            ]
-        }
-    }
+		return {
+			section: "database_mongo",
+			description: "Configure the databasing system",
+			elements: [
+				{
+					option: "url",
+					description: "Give the full URL to your MongoDB server (should start with 'mongodb://')",
+					standard: "mongodb://localhost:27017/music"
+				}
+			]
+		};
+	}
 
 	/**
 	 * Connect to the database.
@@ -30,9 +30,11 @@ class DbMongo extends DbBase {
 	 */
 	connect(callback) {
 
-		if(!this._config.database.url){
-			process.nextTick(function(){typeof callback === "function" && callback(new Error("Db URL not in config defined"));});
-			return; 
+		if (!this._config.database.url) {
+			process.nextTick(function () {
+				typeof callback === "function" && callback(new Error("Db URL not in config defined"));
+			});
+			return;
 		}
 
 		mongodb.MongoClient.connect(this._config.database.url, function (err, mongoDb) {
@@ -48,35 +50,35 @@ class DbMongo extends DbBase {
 
 	/**
 	 * Setup the database. Called when the server starts for the first time.
-	 * @param {errCallback} callback 
+	 * @param {errCallback} callback
 	 */
-	setup(defaultUser,callback) {
-		this._connection.createCollection("songs",function(err){
-			if(err){
+	setup(defaultUser, callback) {
+		this._connection.createCollection("songs", function (err) {
+			if (err) {
 				typeof callback === "function" && callback(err);
-			}else{
-				this._connection.createCollection("users",function(err){
-					if(err){
+			} else {
+				this._connection.createCollection("users", function (err) {
+					if (err) {
 						typeof callback === "function" && callback(err);
-					}else{
+					} else {
 						this._connection.collection("users").insert({
-							username:defaultUser.username,
-							password:defaultUser.password
-						},function(err){
-							typeof callback === "function" &&  callback(err);
+							username: defaultUser.username,
+							password: defaultUser.password
+						}, function (err) {
+							typeof callback === "function" && callback(err);
 						});
 					}
 				}.bind(this));
 			}
-			
+
 		}.bind(this));
-		
+
 	}
 
 	/**
 	 * Get all songs from the database
-	 * @param {*} filter 
-	 * @param {DbBase~getSongsCallback} callback 
+	 * @param {*} filter
+	 * @param {DbBase~getSongsCallback} callback
 	 */
 	getSongs(filter, callback) {
 		this._connection.collection("songs").find(filter).toArray(function (err, result) {
@@ -94,7 +96,7 @@ class DbMongo extends DbBase {
 						created: mongodb.ObjectID(element._id).getTimestamp()
 					}));
 				});
-				typeof callback === "function" && callback(null,retunResult);
+				typeof callback === "function" && callback(null, retunResult);
 			}
 		});
 	}
@@ -103,30 +105,32 @@ class DbMongo extends DbBase {
 	/**
 	 * Get a spesific song
 	 * @param {string} id - Id of the song
-	 * @param {DbBase~getSongCallback} callback 
+	 * @param {DbBase~getSongCallback} callback
 	 */
 	getSong(id, callback) {
 		let _id;
-		try{
+		try {
 			_id = new mongodb.ObjectID(id);
-		}catch(e){
-			process.nextTick(function(){typeof callback === "function" && callback(e,null);});
+		} catch (e) {
+			process.nextTick(function () {
+				typeof callback === "function" && callback(e, null);
+			});
 		}
-		
-		this._connection.collection("songs").findOne({ _id }, function (err, result) {
+
+		this._connection.collection("songs").findOne({_id}, function (err, result) {
 			if (err || !result) {
 				typeof callback === "function" && callback(err, null);
 			} else {
 				result.created = mongodb.ObjectID(result._id).getTimestamp();
 				result.id = result._id.toString();
-				typeof callback === "function" && callback(null,new Song(result));
+				typeof callback === "function" && callback(null, new Song(result));
 			}
 		});
 	}
 
 	/**
-	 * Get all artists 
-	 * @param {DbBase~getArtistsCallback} callback - 
+	 * Get all artists
+	 * @param {DbBase~getArtistsCallback} callback -
 	 */
 	getArtists(callback) {
 		this._connection.collection("songs").aggregate([{
@@ -136,30 +140,30 @@ class DbMongo extends DbBase {
 					$sum: 1
 				}
 			}
-		}]).toArray(function(err,result){
-			let newResult =[];
-			result.forEach(function(element){
-				if(element._id == null){
+		}]).toArray(function (err, result) {
+			let newResult = [];
+			result.forEach(function (element) {
+				if (element._id == null) {
 					newResult.push({
-						name:"Unknown artist",
-						numSongs:element.numSongs
+						name: "Unknown artist",
+						numSongs: element.numSongs
 					});
-				}else{
+				} else {
 					newResult.push({
-						name:element._id,
-						numSongs:element.numSongs
+						name: element._id,
+						numSongs: element.numSongs
 					});
 				}
 
 			});
 
-			typeof callback === "function" && callback(err,newResult);
+			typeof callback === "function" && callback(err, newResult);
 		});
 	}
 
 	/**
 	 * Get all Albums
-	 * @param {DbBase~getAlbumsCallback} callback 
+	 * @param {DbBase~getAlbumsCallback} callback
 	 */
 	getAlbums(callback) {
 		this._connection.collection("songs").aggregate([{
@@ -169,24 +173,24 @@ class DbMongo extends DbBase {
 					$sum: 1
 				}
 			}
-		}]).toArray(function(err,result){
-			let newResult =[];
-			result.forEach(function(element){
-				if(element._id == null){
+		}]).toArray(function (err, result) {
+			let newResult = [];
+			result.forEach(function (element) {
+				if (element._id == null) {
 					newResult.push({
-						name:"Unknown album",
-						numSongs:element.numSongs
+						name: "Unknown album",
+						numSongs: element.numSongs
 					});
-				}else{
+				} else {
 					newResult.push({
-						name:element._id,
-						numSongs:element.numSongs
+						name: element._id,
+						numSongs: element.numSongs
 					});
 				}
 
 			});
 
-			typeof callback === "function" && callback(err,newResult);
+			typeof callback === "function" && callback(err, newResult);
 		});
 	}
 
@@ -205,16 +209,16 @@ class DbMongo extends DbBase {
 	}
 
 	/**
-	 * Updates a song 
-	 * @param {Song} song 
-	 * @param {errCallback} callback 
+	 * Updates a song
+	 * @param {Song} song
+	 * @param {errCallback} callback
 	 */
 	updateSong(song, callback) {
-		
+
 		let dbObject = this._createUpdateObject(song);
 		this._connection.collection("songs").updateOne({
 			_id: new mongodb.ObjectId(song.id)
-		},dbObject, function(err){
+		}, dbObject, function (err) {
 			typeof callback === "function" && callback(err);
 		});
 	}
@@ -222,32 +226,34 @@ class DbMongo extends DbBase {
 	/**
 	 * Removes a Song
 	 * @param {string} id - Id of the Song
-	 * @param {errCallback} callback 
+	 * @param {errCallback} callback
 	 */
-	removeSong(id, callback){
+	removeSong(id, callback) {
 		let _id;
-		try{
+		try {
 			_id = new mongodb.ObjectID(id);
-		}catch(e){
-			process.nextTick(function(){typeof callback === "function" && callback(e,null);});
+		} catch (e) {
+			process.nextTick(function () {
+				typeof callback === "function" && callback(e, null);
+			});
 		}
 
-		this._connection.collection("songs").remove({ _id },function(err){
+		this._connection.collection("songs").remove({_id}, function (err) {
 			typeof callback === "function" && callback(err);
 		});
 	}
 
 	/**
-	 * Retuns a User with password 
-	 * @param {string} username 
-	 * @param {DbBase~getUserCallback} callback 
+	 * Retuns a User with password
+	 * @param {string} username
+	 * @param {DbBase~getUserCallback} callback
 	 */
 	getUser(username, callback) {
 		this._connection.collection("users").findOne({
 			username: username
 		}, function (err, result) {
 			if (err) {
-				typeof callback === "function" && callback(err,null);
+				typeof callback === "function" && callback(err, null);
 			} else if (result) {
 				delete result._id;
 				typeof callback === "function" && callback(null, result);
@@ -259,70 +265,70 @@ class DbMongo extends DbBase {
 
 	/**
 	 * Adds User
-	 * @param {string} username 
+	 * @param {string} username
 	 * @param {string} hash
-	 * @param {errCallback} callback 
+	 * @param {errCallback} callback
 	 */
 	addUser(username, hash, callback) {
-		
+
 		this._connection.collection("users").insert({
 			username: username,
 			password: hash
-		}, function(err){
+		}, function (err) {
 			typeof callback === "function" && callback(err);
 		});
 	}
 
 	/**
 	 * Gat all users
-	 * @param {DbBase~getAllUsersCallback} callback 
+	 * @param {DbBase~getAllUsersCallback} callback
 	 */
 	getAllUsers(callback) {
-		this._connection.collection("users").find({}).toArray(function(err,result){
-			if(err){
-				typeof callback === "function" && callback(err,null);
-			}else{
+		this._connection.collection("users").find({}).toArray(function (err, result) {
+			if (err) {
+				typeof callback === "function" && callback(err, null);
+			} else {
 				result.forEach(element => {
 					delete element._id;
 				});
 
-				typeof callback === "function" && callback(null,result);
+				typeof callback === "function" && callback(null, result);
 			}
-			
+
 
 		});
 	}
 
 	/**
 	 * Updates the password from a user
-	 * @param {string} username 
-	 * @param {string} newHash 
-	 * @param {errCallback} callback 
+	 * @param {string} username
+	 * @param {string} newHash
+	 * @param {errCallback} callback
 	 */
 	updatePassword(username, newHash, callback) {
-		this._connection.collection("users").update({ username: username }, {
-			$set:{
+		this._connection.collection("users").update({username: username}, {
+			$set: {
 				password: newHash
 			}
-		}, function(err){
+		}, function (err) {
 			typeof callback === "function" && callback(err);
 		});
 	}
 
 	/**
 	 * Removes a user
-	 * @param {string} username 
-	 * @param {errCallback} callback 
+	 * @param {string} username
+	 * @param {errCallback} callback
 	 */
-	removeUser(username,callback){
-		this._connection.collection("users").remove({username},function(err){
+	removeUser(username, callback) {
+		this._connection.collection("users").remove({username}, function (err) {
 			typeof callback === "function" && callback(err);
 		});
 	}
 
 	/**
 	 * Converts a Song to a object to strore in the database
-	 * @param {Song} song 
+	 * @param {Song} song
 	 * @returns {Object} The database object
 	 */
 	_SongToDbObject(song) {
@@ -343,22 +349,22 @@ class DbMongo extends DbBase {
 
 	}
 
-	_createUpdateObject(song){
+	_createUpdateObject(song) {
 		let updateOject = {};
 
-		["file","duration"].forEach(element => {
-			if(song[element]){
+		["file", "duration"].forEach(element => {
+			if (song[element]) {
 				updateOject[element] = song[element];
 			}
 		});
 
-		["title","artist","album","genre","year"].forEach(element => {
-			if(song.metadata[element]){
-				updateOject["metadata."+element] = song.metadata[element];
+		["title", "artist", "album", "genre", "year"].forEach(element => {
+			if (song.metadata[element]) {
+				updateOject["metadata." + element] = song.metadata[element];
 			}
 		});
-		
-		return {$set:updateOject};
+
+		return {$set: updateOject};
 	}
 }
 

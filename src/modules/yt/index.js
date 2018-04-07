@@ -3,23 +3,9 @@ const express = require("express");
 const path = require("path");
 const router = express.Router();
 
-class YTDownload{
+class YTDownload {
 
-    static getConfigTemplate() {
-        return {
-            section: 'youtube',
-            description: "Configure the Youtube-Downloader plugin",
-            elements: [
-                {
-                    option: 'ffmpegPath',
-                    description: "The path to your ffmpeg executable (the default assumes it's in the PATH)",
-                    standard: "ffmpeg"
-                }
-            ]
-        }
-    }
-
-    constructor(music, logger, config){
+	constructor(music, logger, config) {
 		this._music = music;
 		this._logger = logger;
 		this._config = config;
@@ -37,7 +23,7 @@ class YTDownload{
 		this._yd.on("error", function (error) {
 			logger.error("YTDownload: " + error);
 		});
-	
+
 		this._yd.on("progress", function (progress) {
 			//TOD: progress
 		});
@@ -55,33 +41,46 @@ class YTDownload{
 						throw err;
 					} else {
 						logger.info("YTDownload: " + data.videoId + " complete");
-	
+
 						this._queue.shift();
-	
+
 						if (this._queue.length != 0) {
 							this._yd.download(this._queue[0].id);
 						}
 					}
-	
+
 				}.bind(this));
 			}
-	
+
 		}.bind(this));
 
 		this._router.get("/api/downloadYoutube", function (req, res) {
 			req.app.locals.checkLogin(req, res, function () {
 				this.download(req.query.id);
 			}.bind(this));
-	
+
 		}.bind(this));
 	}
 
-	
-	get router(){
+	get router() {
 		return this._router;
 	}
 
-	download(id){
+	static getConfigTemplate() {
+		return {
+			section: "youtube",
+			description: "Configure the Youtube-Downloader plugin",
+			elements: [
+				{
+					option: "ffmpegPath",
+					description: "The path to your ffmpeg executable (the default assumes it's in the PATH)",
+					standard: "ffmpeg"
+				}
+			]
+		};
+	}
+
+	download(id) {
 		this._queue.push({
 			id: id,
 			progress: 0

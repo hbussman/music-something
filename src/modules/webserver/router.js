@@ -30,7 +30,7 @@ module.exports = function (app, music, logger, config) {
 				if (err) {
 					res.status(500).send();
 					throw err;
-				}else if(!result){
+				} else if (!result) {
 					res.status(404).send();
 				} else {
 					res.json(result);
@@ -100,7 +100,7 @@ module.exports = function (app, music, logger, config) {
     *   Path: /api/songs
     */
 	router.post("/api/songs/", function (req, res) {
-		
+
 		app.locals.checkLogin(req, res, function () {
 			var folder = path.join(config.dataPath, "tmp");
 			var songPath = path.join(folder, req.files.file.name);
@@ -145,7 +145,7 @@ module.exports = function (app, music, logger, config) {
 		app.locals.checkLogin(req, res, function () {
 			music.getAlbums(function (err, result) {
 				if (err) {
-				//err
+					//err
 					res.status(500).send();
 					throw err;
 				} else {
@@ -165,7 +165,7 @@ module.exports = function (app, music, logger, config) {
 				//err
 				throw err;
 			} else if (!success) {
-				
+
 			} else {
 				jwt.sign(info,
 					config.jwtSecret,
@@ -191,12 +191,12 @@ module.exports = function (app, music, logger, config) {
 	});
 
 	router.get("/api/users", function (req, res) {
-		app.locals.checkLogin(req,res,function(){
-			music.getAllUsers(function(err,result){
-				if(err){
+		app.locals.checkLogin(req, res, function () {
+			music.getAllUsers(function (err, result) {
+				if (err) {
 					//err
 					throw err;
-				}else{
+				} else {
 					res.json(result);
 				}
 			});
@@ -204,12 +204,12 @@ module.exports = function (app, music, logger, config) {
 	});
 
 	router.post("/api/users", function (req, res) {
-		app.locals.checkLogin(req,res,function(){
-			music.addUser(req.body.username,req.body.password,function(err){
-				if(err){
+		app.locals.checkLogin(req, res, function () {
+			music.addUser(req.body.username, req.body.password, function (err) {
+				if (err) {
 					//err
 					throw err;
-				}else{
+				} else {
 					res.send();
 				}
 			});
