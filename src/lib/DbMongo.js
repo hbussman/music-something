@@ -10,6 +10,20 @@ class DbMongo extends DbBase {
 		this._config = config;
 	}
 
+	static getConfigTemplate() {
+        return {
+            section: 'database_mongo',
+            description: "Configure the databasing system",
+            elements: [
+                {
+                    option: 'url',
+                    description: "Give the full URL to your MongoDB server (should start with 'mongodb://')",
+                    standard: "mongodb://localhost:27017/music"
+                }
+            ]
+        }
+    }
+
 	/**
 	 * Connect to the database.
 	 * @param {errCallback} callback - Callback
