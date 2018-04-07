@@ -22,10 +22,10 @@ import Context from "./Context";
 			},
 			methods: {
 				updateSongs: function () {
-					player.updateSongList(function(){
+					player.updateSongList(function () {
 						this.songs = player.songs;
 					}.bind(this));
-					
+
 				},
 				getSortKeyValue: function (song) {
 					switch (this.sortKey) {
@@ -45,38 +45,38 @@ import Context from "./Context";
 					this.sortKey = newKey;
 					this.sortAsc = !this.sortAsc;
 				},
-				doubleClick:function(index){
+				doubleClick: function (index) {
 					player.playSongById(this.filteredSongs[index].id);
 				},
-				playNext: function(){
-					let currentIndex = this.filteredSongs.findIndex(function(element){
+				playNext: function () {
+					let currentIndex = this.filteredSongs.findIndex(function (element) {
 						return element.id == player.currentSong;
 					});
 
-					if(currentIndex < this.songs.length -1){
-						player.playSongById(this.filteredSongs[currentIndex+1].id);
+					if (currentIndex < this.songs.length - 1) {
+						player.playSongById(this.filteredSongs[currentIndex + 1].id);
 					}
 
 				},
-				playPrevious: function(){
-					let currentIndex = this.filteredSongs.findIndex(function(element){
+				playPrevious: function () {
+					let currentIndex = this.filteredSongs.findIndex(function (element) {
 						return element.id == player.currentSong;
 					});
 
-					if(currentIndex >0){
-						player.playSongById(this.filteredSongs[currentIndex-1].id);
+					if (currentIndex > 0) {
+						player.playSongById(this.filteredSongs[currentIndex - 1].id);
 					}
 				},
-				contextMenu: function(index,event){
-					songContext.displayAt(event,this.filteredSongs[index]);
+				contextMenu: function (index, event) {
+					songContext.displayAt(event, this.filteredSongs[index]);
 				},
-				presedPlay: function(){
+				presedPlay: function () {
 					console.log("presed Playe");
-					if(player.readyToPlay()){
+					if (player.readyToPlay()) {
 						player.togglePause();
 						console.log(player.readyToPlay());
-					}else{
-						if(this.songs.length >= 1){
+					} else {
+						if (this.songs.length >= 1) {
 							player.playSongById(this.filteredSongs[0].id);
 						}
 					}
@@ -99,14 +99,14 @@ import Context from "./Context";
 		//Create contextmenu for the songs 
 		songContext = new Context([
 			{
-				title:"Play",
-				callback:function(selectedSong){
+				title: "Play",
+				callback: function (selectedSong) {
 					player.playSongById(selectedSong.id);
 				}
 			},
 			{
-				title:"Edit",
-				callback:function(selectedSong){
+				title: "Edit",
+				callback: function (selectedSong) {
 					$("#editModalID").val(selectedSong.id);
 					$("#editModalTitle").val(selectedSong.metadata.title);
 					$("#editModalArtist").val(selectedSong.metadata.artist);
@@ -118,8 +118,8 @@ import Context from "./Context";
 				}
 			},
 			{
-				title:"Delete",
-				callback: function(selectedSong){
+				title: "Delete",
+				callback: function (selectedSong) {
 					$("#deleteModalSongname").text(selectedSong.title);
 					$("#deleteModal").modal("show");
 				}
@@ -129,20 +129,20 @@ import Context from "./Context";
 
 		// event listners
 
-		player.on("ended",function(){
+		player.on("ended", function () {
 			vu.playNext();
 		});
 
 
-		player.on("error",function(error){
+		player.on("error", function (error) {
 			//TODO: inform user that something fucked up
 		});
 
-		player.on("timeupdate",function(){
-			$("#progressSongBar").width((player.currentTime  / player.duration )* 100 + "%");
+		player.on("timeupdate", function () {
+			$("#progressSongBar").width((player.currentTime / player.duration) * 100 + "%");
 		});
 
-		player.on("pauseChaned",function(){
+		player.on("pauseChaned", function () {
 			if (player.isPaused) {
 				$("#start-stop").attr("class", "glyphicon glyphicon-play pointer");
 			} else {
@@ -152,7 +152,7 @@ import Context from "./Context";
 
 		//Update songlist for the first time
 		vu.updateSongs();
-		
+
 		//Bind Buttons with player functions
 
 		$("#backBtn").on("click", function () {
@@ -174,7 +174,7 @@ import Context from "./Context";
 			if (player.skipTimeTo(player.duration * pc)) {
 				$("#progressSongBar").width(pc * 100 + "%");
 			}
-		}); 
+		});
 
 		//Volume 
 
@@ -196,7 +196,7 @@ import Context from "./Context";
 		volumeSlider.oninput = oninputEvent;
 		oninputEvent();
 
-		$("#volume").on("click",function () {
+		$("#volume").on("click", function () {
 			if ($("#volumeSliderContainer").css("visibility") == "hidden") {
 				$("#volumeSliderContainer").css("visibility", "visible");
 			} else {
@@ -225,14 +225,14 @@ import Context from "./Context";
 
 		//All the modal bindings and stuff
 
-		
+
 		$("#deleteModalBtn").on("click", function () {
-			var deleteId= songContext.args[0].id;
-			player.deleteSong(deleteId,function(){
+			var deleteId = songContext.args[0].id;
+			player.deleteSong(deleteId, function () {
 				vu.updateSongs();
 
 				//Stop playing when deleted song is playing
-				if(player.currentSong == deleteId){
+				if (player.currentSong == deleteId) {
 					player.stop();
 				}
 			});
@@ -243,7 +243,7 @@ import Context from "./Context";
 				title: $("#editModalTitle").val(),
 				artist: $("#editModalArtist").val(),
 				album: $("#editModalAlbum").val()
-			},function(){
+			}, function () {
 				vu.updateSongs();
 			});
 
@@ -288,11 +288,11 @@ import Context from "./Context";
 				case "pausePlay":
 					vu.presedPlay();
 					break;
-	
+
 				case "next":
 					player.playNext();
 					break;
-	
+
 				case "previous":
 					player.playPrevious();
 					break;
@@ -301,6 +301,5 @@ import Context from "./Context";
 
 	};
 
-	
 
 })();

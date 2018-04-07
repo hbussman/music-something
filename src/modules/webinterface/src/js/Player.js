@@ -4,39 +4,41 @@
 
 import MusicSomethingPlayer from "./MusicSomething";
 
-class Player extends MusicSomethingPlayer{
-	constructor(){
+class Player extends MusicSomethingPlayer {
+	constructor() {
 		super();
 
 		this.songs = [];
 	}
 
-	get currentSong(){return this._currentSong;}
+	get currentSong() {
+		return this._currentSong;
+	}
 
-	updateSongList(callback){
-		this.fetchSongList(function(data){
+	updateSongList(callback) {
+		this.fetchSongList(function (data) {
 			this.songs = data;
 			typeof callback === "function" && callback();
 		}.bind(this));
 	}
 
-	playSongById(id){
+	playSongById(id) {
 
 		super.playSongById(id);
 		this._currentSong = id;
-	
+
 	}
 
-	stop(){
+	stop() {
 		super.stop();
 		this._currentSong = null;
 	}
 
-	readyToPlay(){
+	readyToPlay() {
 		return this._currentSong ? true : false;
 	}
 
-	
+
 }
 
 export default Player;

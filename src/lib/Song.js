@@ -1,9 +1,9 @@
 "use stict";
 const Metadata = require("./Metadata");
 
-/** 
+/**
  * Represents a Song
-*/
+ */
 class Song {
 	constructor(initValues) {
 		if (initValues) {
@@ -15,8 +15,12 @@ class Song {
 			this._created = initValues.created;
 		}
 	}
+
 	//Getters
-	get created() { return this._created; }
+	get created() {
+		return this._created;
+	}
+
 	get durationMinutes() {
 		let min = Math.floor(this.duration / 60);
 		let restSec = this.duration % 60;
@@ -38,9 +42,9 @@ class Song {
 		}
 	}
 
-	toJSON(){
-		let {id,duration,file,durationMinutes} = this;
-		return {id,duration,file,durationMinutes,metadata:this.metadata.toJSON()};
+	toJSON() {
+		let {id, duration, file, durationMinutes} = this;
+		return {id, duration, file, durationMinutes, metadata: this.metadata.toJSON()};
 	}
 
 

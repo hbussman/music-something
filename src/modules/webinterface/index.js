@@ -3,28 +3,28 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 
-class webinterface{
+class webinterface {
 	/**
-     * 
-     * @param {Music} music 
-     * @param {*} logger 
-     * @param {*} config 
-     */
-	constructor(music,logger,config){
+	 *
+	 * @param {Music} music
+	 * @param {*} logger
+	 * @param {*} config
+	 */
+	constructor(music, logger, config) {
 		this._music = music;
 		this._logger = logger;
 		this._config = config;
 	}
 
-	get router(){
+	get router() {
 
-		router.use(express.static(path.join(__dirname,"dist","public")));
+		router.use(express.static(path.join(__dirname, "dist", "public")));
 
 		//Jquery
-		router.use("/js", express.static(path.join(require.resolve("jquery"),"..")));
+		router.use("/js", express.static(path.join(require.resolve("jquery"), "..")));
 
 		//Bootstrap
-		router.use(express.static(path.join(require.resolve("bootstrap"), "..","..")));
+		router.use(express.static(path.join(require.resolve("bootstrap"), "..", "..")));
 
 		//Vue
 		router.use("/js", express.static(path.join(require.resolve("vue"), "..")));
@@ -38,7 +38,7 @@ class webinterface{
 			req.app.locals.checkLogin(req, res, function () {
 				res.redirect("/");
 			}, function () {
-				res.sendFile(path.join(__dirname,"dist","private", "login.html"));
+				res.sendFile(path.join(__dirname, "dist", "private", "login.html"));
 			});
 		});
 
@@ -49,7 +49,7 @@ class webinterface{
     	 */
 		router.get("/", function (req, res) {
 			req.app.locals.checkLogin(req, res, function () {
-				res.sendFile(path.join(__dirname,"dist","private", "index.html"));
+				res.sendFile(path.join(__dirname, "dist", "private", "index.html"));
 			}, function () {
 				res.redirect("/login");
 			});
@@ -98,7 +98,7 @@ class webinterface{
 			}, function () {
 				this._music.loginCheck(req.body.username, req.body.password, function (err, result, user) {
 					if (err) {
-					//TODO log err
+						//TODO log err
 						throw err;
 					} else if (result) {
 						req.session.user = user;

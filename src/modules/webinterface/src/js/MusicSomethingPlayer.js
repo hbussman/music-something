@@ -1,4 +1,3 @@
-
 function MusicSomethingPlayery() {
 	//Private
 	var audio;
@@ -65,13 +64,13 @@ function MusicSomethingPlayery() {
 
 		//set pos of the div
 		if (event.clientX + 200 > $(window).width()) {
-			context.css({ top: event.pageY + "px", left: event.pageX - 200 + "px", visibility: "visible" });
+			context.css({top: event.pageY + "px", left: event.pageX - 200 + "px", visibility: "visible"});
 		} else {
-			context.css({ top: event.pageY + "px", left: event.pageX + "px", visibility: "visible" });
+			context.css({top: event.pageY + "px", left: event.pageX + "px", visibility: "visible"});
 		}
 
 		document.onclick = function (event2) {
-			context.css({ visibility: "hidden" });
+			context.css({visibility: "hidden"});
 			document.onclick = null;
 			selected = null;
 		};
@@ -375,7 +374,7 @@ function MusicSomethingPlayery() {
 		computed: {
 			filteredSongs: function () {
 				return this.songList.sort(function (a, b) {
-					
+
 					if (a[this.sortKey] < b[this.sortKey]) return (this.sortAsc) ? -1 : 1;
 					if (a[this.sortKey] > b[this.sortKey]) return (this.sortAsc) ? 1 : -1;
 					if (a[this.sortKey] == null) return (this.sortAsc) ? 1 : -1;
